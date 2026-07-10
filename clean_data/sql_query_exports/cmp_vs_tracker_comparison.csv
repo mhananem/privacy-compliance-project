@@ -1,0 +1,3 @@
+cmp_status,num_sites,avg_trackers,avg_ad_networks
+"No recognized CMP",2458,9.7,4.2
+"Has recognized CMP",1642,17.3,7.9
