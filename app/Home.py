@@ -18,7 +18,7 @@ st.set_page_config(
     layout="wide",
 )
 
-DATA_PATH = "../clean_data/dataset_completed.csv"
+DATA_PATH = "../clean_data/dataset_completed_clean.csv"
 
 
 @st.cache_data
