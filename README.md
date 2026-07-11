@@ -15,7 +15,7 @@ rules.
 
 ## The question
 
-Under GDPR and France's CNIL guidelines, **refusing cookies must be as easy as
+Under GDPR and European Data Regulators guidelines, **refusing cookies must be as easy as
 accepting them**. In practice, many sites show a slick "Accept" button and
 either hide the reject option or make clicking it do nothing at all.
 
