@@ -21,8 +21,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import os
-from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+
 
 
 # ------------------------------------------------------------------ constants
@@ -77,6 +77,11 @@ MAJOR_CLOUD_CDN = ["amazon", "google", "fastly", "akamai", "cloudflare", "micros
 # ------------------------------------------------------------------ browser setup
 
 
+def _find_chromium_binary():
+    for path in ["/usr/bin/chromium", "/usr/bin/chromium-browser"]:
+        if os.path.exists(path):
+            return path
+    return None
 
 def _make_driver():
     opts = Options()
