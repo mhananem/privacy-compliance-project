@@ -15,10 +15,15 @@ instead — the app only cares about the returned dict keys.
 import json
 import time
 from urllib.parse import urlparse
+from selenium.webdriver.chrome.service import Service
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+import os
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
 
 # ------------------------------------------------------------------ constants
 # Known tracker / ad-network domains (short illustrative lists — replace with the
@@ -70,6 +75,9 @@ MAJOR_CLOUD_CDN = ["amazon", "google", "fastly", "akamai", "cloudflare", "micros
 
 
 # ------------------------------------------------------------------ browser setup
+
+
+
 def _make_driver():
     opts = Options()
     opts.add_argument("--headless=new")
@@ -80,9 +88,17 @@ def _make_driver():
         "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
         "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
     )
-    # performance logs let us see every network request the page makes
     opts.set_capability("goog:loggingPrefs", {"performance": "ALL"})
-    return webdriver.Chrome(options=opts)
+
+    if os.path.exists("/usr/bin/chromium"):
+        # Streamlit Cloud: apt-installed chromium (from packages.txt)
+        opts.binary_location = "/usr/bin/chromium"
+        service = Service("/usr/bin/chromedriver")
+    else:
+        # Local machine: same webdriver-manager approach as your capstone notebooks
+        service = Service(ChromeDriverManager().install())
+
+    return webdriver.Chrome(service=service, options=opts)
 
 
 def _requested_urls(driver):
