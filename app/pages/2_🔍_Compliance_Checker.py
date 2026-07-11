@@ -7,18 +7,20 @@ Then an optional "Verify" button runs the real differential test to compare.
 import joblib
 import pandas as pd
 import streamlit as st
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+MODEL_PATH = BASE_DIR / "models" / "reject_effectiveness_rf.joblib"
+COLUMNS_PATH = BASE_DIR / "models" / "model_feature_columns.joblib"
 
 st.set_page_config(page_title="Compliance Checker", page_icon="🔍", layout="centered")
-
-MODEL_PATH = "../models/reject_effectiveness_rf.joblib"
-COLUMNS_PATH = "../models/model_feature_columns.joblib"
 
 # Demo mode lets you present without live scraping (no Chrome needed, no network risk).
 DEMO_MODE = st.sidebar.toggle(
     "🎭 Demo mode (no live scraping)",
     value=False,
-    help="Uses a canned example scan instead of Selenium. Perfect for the jury demo "
-         "if the venue wifi is unreliable.",
+    help="Uses an example scan instead of Selenium.",
 )
 
 
@@ -128,7 +130,7 @@ if "scan" in st.session_state:
     st.subheader("Verify with the real test")
     st.caption(
         "This runs the actual differential test: click the reject button, reload, and "
-        "re-count trackers. Slower (~30–60s) and it can fail on complex banners — which "
+        "re-count trackers. Slower (~30–60s) and it can fail on complex banners, which "
         "is exactly why the model exists."
     )
 
@@ -164,14 +166,14 @@ if "scan" in st.session_state:
                 st.info(f"🎯 The model's prediction ({proba:.0%}) **agrees** with the real test.")
             else:
                 st.warning(
-                    f"🤔 The model predicted {proba:.0%} but the real test says otherwise — "
+                    f"🤔 The model predicted {proba:.0%} but the real test says otherwise  "
                     "this happens; the model is right ~82% of the time, not 100%."
                 )
         elif result["status"] == "no_reject_button":
             st.error("The verification couldn't run: no clickable reject button was found. "
                      "(This is the case for ~61% of sites — the exact gap the model fills.)")
         else:
-            st.error(f"Verification failed: {result.get('error', 'unknown error')} — "
+            st.error(f"Verification failed: {result.get('error', 'unknown error')}  "
                      "complex banners (shadow DOM, bot detection) often resist automation.")
 
 st.sidebar.divider()

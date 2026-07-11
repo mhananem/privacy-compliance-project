@@ -4,22 +4,24 @@ Page 1: Introduction & market research
 
 Run from the app/ folder with:  streamlit run Home.py
 Expects:
-  ../clean_data/dataset_completed.csv     (the scraped dataset)
+  ../clean_data/dataset_completed_clean.csv     (the scraped dataset)
   ../models/reject_effectiveness_rf.joblib (used by page 2)
 """
 
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_PATH = BASE_DIR / "clean_data" / "dataset_completed_clean.csv"
+
 
 st.set_page_config(
     page_title="Privacy Risk Scorer",
     page_icon="🛡️",
     layout="wide",
 )
-
-DATA_PATH = "../clean_data/dataset_completed_clean.csv"
-
 
 @st.cache_data
 def load_data():
@@ -42,7 +44,8 @@ what happens **after** you click reject.
 This project measured exactly that, at scale: **5,000 URLs scraped**, a real reject
 click performed wherever possible, and trackers re-counted afterwards. The result is a
 dataset, a set of market insights, and a machine-learning model that can estimate the
-honesty of any site's reject button from a quick pre-consent scan — try it on the
+honesty of any site's reject button from a quick pre-consent scan 
+-> try it on the
 **Compliance Checker** page (sidebar 👈).
 """
 )
@@ -55,7 +58,7 @@ n_reject_btn = (df["has_reject_button"] == True).mean() * 100
 tested = df[df["reject_click_attempted"] == True]
 works_pct = (tested["tracker_count_after_reject"] == 0).mean() * 100
 
-c1.metric("Sites scanned", f"{n_sites:,}")
+c1.metric("Sites scanned(successfull)", f"{n_sites:,}")
 c2.metric("Offer a reject button", f"{n_reject_btn:.0f}%")
 c3.metric("Reject actually tested", f"{len(tested):,}")
 c4.metric("Reject truly works", f"{works_pct:.0f}%", help="Trackers drop to zero after the reject click")
@@ -63,10 +66,10 @@ c4.metric("Reject truly works", f"{works_pct:.0f}%", help="Trackers drop to zero
 st.divider()
 
 # ---------------------------------------------------------------- market research charts
-st.header("📊 Market research — what the data says")
+st.header("📊 What the data says")
 st.caption(
     "These insights come from the SQL layer of the project "
-    "(MySQL, 4-table schema, 8 insight queries), recomputed here from the flat dataset."
+    "(MySQL, 5-table schema, recomputed here from the flat dataset."
 )
 
 tab1, tab2, tab3 = st.tabs(
@@ -166,6 +169,6 @@ st.info(
     "**Why predict instead of always measuring?** The real test only completes on ~38% "
     "of sites (missing reject buttons, shadow-DOM banners, bot detection, timeouts) and "
     "takes 30–60s. The expensive measurement was done once, at scale, to build the "
-    "training labels — the model then covers every site, in seconds.",
+    "training labels, the model then covers every site, in seconds.",
     icon="💡",
 )
