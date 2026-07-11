@@ -155,8 +155,8 @@ pip install -r requirements.txt
 streamlit run Home.py
 ```
 
-The app has a **demo mode** (sidebar toggle) that uses a canned example, so a
-live presentation never depends on venue wifi or a slow site.
+The app has a **demo mode** (sidebar toggle) that uses a canned example
+link to the presentation deck : [Presentation deck](https://docs.google.com/presentation/d/12QFdIPtCiMVJkGl1e7hrauxltaf_sJBR7f-BRo6vK1o/edit?usp=sharing)
 
 ---
 
@@ -168,6 +168,8 @@ live presentation never depends on venue wifi or a slow site.
   standard is about *visual parity*, not just whether a reject button exists.
 - **Deploy the app** publicly and wire the full capstone scraper into
   `scanner.py` for production-fidelity feature values.
+
+
 
 ---
 
