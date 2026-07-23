@@ -18,7 +18,6 @@ cookie-consent rules.
 | | |
 |---|---|
 | 📘 **Full project report (PDF)** | [RNCP_report_privacy_compliance_scorer_Hanane_Mamalik_FV.pdf](docs/RNCP_report_privacy_compliance_scorer_Hanane_Mamalik_FV.pdf) |
-| 🎤 **Presentation deck** | [Google Slides](https://docs.google.com/presentation/d/12QFdIPtCiMVJkGl1e7hrauxltaf_sJBR7f-BRo6vK1o/edit?usp=sharing) |
 
 The report covers the full pipeline in 12 sections — use case, planning, the
 five data sources, data dictionary, cleaning, EDA, the relational database and
