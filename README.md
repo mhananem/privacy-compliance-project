@@ -7,9 +7,23 @@ cookie-consent compliance — whether clicking "reject" actually stops the
 tracking — starting from nothing but its URL. That focus is deliberate:
 compliance is broad and partly a legal judgment, so the project scopes to the
 one dimension it can test objectively and at scale. It combines a web-scraping
-pipeline, a MySQL analytics layer, a machine-learning model, and a Streamlit
-app into one end-to-end data product built around GDPR / CNIL cookie-consent
-rules.
+pipeline, a MySQL analytics layer, a machine-learning model, a Flask REST API
+and a Streamlit app into one end-to-end data product built around GDPR / CNIL
+cookie-consent rules.
+
+---
+
+## 📄 Project deliverables
+
+| | |
+|---|---|
+| 📘 **Full project report (PDF)** | [RNCP_report_privacy_compliance_scorer_Hanane_Mamalik_FV.pdf](docs/RNCP_report_privacy_compliance_scorer_Hanane_Mamalik_FV.pdf) |
+| 🎤 **Presentation deck** | [Google Slides](https://docs.google.com/presentation/d/12QFdIPtCiMVJkGl1e7hrauxltaf_sJBR7f-BRo6vK1o/edit?usp=sharing) |
+
+The report covers the full pipeline in 12 sections — use case, planning, the
+five data sources, data dictionary, cleaning, EDA, the relational database and
+ERD, SQL insights, the REST API, the machine-learning model, and the
+conclusions including the GDPR note.
 
 ---
 
@@ -118,20 +132,20 @@ exported to `clean_data/sql_query_exports/`.
 │   ├── 00_sql_database_setup.ipynb          build the 5-table MySQL database
 │   ├── 00a_tracker_list_setup.ipynb         download the Disconnect.me tracker list
 │   ├── 00b_tranco_data_cleaning.ipynb       clean the flat file → urls.csv
-│   ├── 01_scraper_batch_full_audit.ipynb    the Selenium scraper
-│   ├── 02_scraper_single_url_prototype.ipynb  single-URL scraper prototype
+│   ├── 01_scraper_single_url_prototype.ipynb  single-URL scraper prototype
+│   ├── 02_scraper_batch_full_audit.ipynb    the Selenium scraper (batch)
 │   ├── 03_api_safe_browsing_enrichment.ipynb  Google Safe Browsing API
 │   ├── 03a_api_geolocation_enrichment.ipynb   IP geolocation API
 │   ├── 03b_data_cleaning.ipynb              clean the enriched dataset
-│   ├── 04_eda_reject_effectiveness.ipynb    EDA for the ML target
+│   ├── 04_eda_reject_effectiveness.ipynb    EDA + all report figures
 │   ├── 05_model_reject_effectiveness.ipynb  train + compare 4 models
-│   ├── 06_sql_insight_queries.ipynb         the 10 insight queries (notebook)
 │   └── 06_sql_insight_queries.sql           the 10 insight queries (Workbench)
+├── api/                                     Flask REST API (see api/README.md)
 ├── app/                                     Streamlit app (see app/README_APP.md)
+├── docs/                                    report PDF + generated figures
 ├── models/                                  trained model + feature columns
 ├── clean_data/                              cleaned datasets + query exports
-├── raw_data/                                raw scrape + API + reference data
-└── archive/                                 superseded drafts
+└── raw_data/                                raw scrape + API + reference data
 ```
 
 ---
@@ -155,8 +169,17 @@ pip install -r requirements.txt
 streamlit run Home.py
 ```
 
-The app has a **demo mode** (sidebar toggle) that uses a canned example
-link to the presentation deck : [Presentation deck](https://docs.google.com/presentation/d/12QFdIPtCiMVJkGl1e7hrauxltaf_sJBR7f-BRo6vK1o/edit?usp=sharing)
+The app has a **demo mode** (sidebar toggle) that uses a canned example, so a
+live demo never depends on venue wifi or on a site behaving as expected.
+
+**4. Launch the REST API** (optional — needs the MySQL database from step 2):
+```bash
+cd api
+pip install -r requirements.txt
+python app.py
+```
+Then open <http://127.0.0.1:5000/>. See [`api/README.md`](api/README.md) for the
+endpoints, filters and example responses.
 
 ---
 
@@ -169,7 +192,51 @@ link to the presentation deck : [Presentation deck](https://docs.google.com/pres
 - **Deploy the app** publicly and wire the full capstone scraper into
   `scanner.py` for production-fidelity feature values.
 
+## External Resources & References
 
+This project was developed using the following external resources, documentation, and open-source references:
+
+### Web Measurement & HTTP Archive
+
+- HTTP Archive documentation and FAQ:  
+  https://httparchive.org/faq
+
+### Web Scraping & Selenium Automation
+
+- WebDriver Manager (Selenium driver management):  
+  https://github.com/SergeyPirogov/webdriver_manager
+
+- Automating Web Scraping with Selenium and ChromeDriver using GitHub Actions:  
+  https://vasantharan.medium.com/automating-web-scraping-with-selenium-and-chromedriver-using-github-actions-5e4a24559dc1
+
+- Selenium + ChromeDriver setup on Ubuntu/Debian:  
+  https://github.com/password123456/setup-selenium-with-chrome-driver-on-ubuntu_debian
+
+### Tracker & Advertising Network Identification
+
+- Disconnect tracking protection lists (used for ad/tracker network identification):  
+  https://github.com/disconnectme/disconnect
+
+- Tracker services database (`services.json`):  
+  https://github.com/disconnectme/disconnect-tracking-protection/blob/master/services.json
+
+### Machine Learning Model Deployment
+
+- Deploying a Machine Learning model using Streamlit:  
+  https://medium.com/@adeniyi221/how-to-deploy-your-machine-learning-model-using-streamlit-455b67a69e31
+
+### Python Development
+
+- Python `dataclasses` documentation:  
+  https://docs.python.org/3/library/dataclasses.html
+
+- Real Python guide on Data Classes:  
+  https://realpython.com/python-data-classes/
+
+### Security & Website Reputation
+
+- Google Safe Browsing API documentation:  
+  https://developers.google.com/safe-browsing/reference
 
 ---
 
